@@ -1,0 +1,30 @@
+# Catalog & Volume Config
+catalog: ecommerce
+schema: data
+volume_stream: streaming_data
+volume_raw: raw_data
+
+# Data Files
+customers_file: /Volumes/ecommerce/raw_data/customers.csv
+products_file: /Volumes/ecommerce/raw_data/products.csv
+
+# Batch Generation Settings
+orders_per_batch: 50           # Number of orders per batch
+min_items_per_order: 1         # Min number of items per order
+max_items_per_order: 5         # Max number of items per order
+batch_interval_seconds: 10     # How often to generate a batch
+
+# Order Status Distribution (weights must sum to 1.0)
+order_status_weights:
+  delivered: 1
+
+# Price Settings (if not in products.csv)
+price_min: 1
+price_max: 1000
+
+# Output Format & Compression
+output_format: jsonl           # Options: jsonl, csv, parquet
+compress: gzip                 # Options: none, gzip
+
+# Atomic Write Settings
+tmp_dir: .tmp                  # Temp directory for safe writes

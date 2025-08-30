@@ -1,0 +1,30 @@
+resources:
+  jobs:
+    EcommDataEnrichment:
+      name: EcommDataEnrichment
+      tasks:
+        - task_key: EcommerceDataenrichPipeline
+          depends_on:
+            - task_key: data_generator
+          notebook_task:
+            notebook_path: /Repos/smitsorathiya12@gmail.com/EcommPipelineandAnalysis/Notebooks/02_data_ingestion_bronze
+            source: WORKSPACE
+        - task_key: data_generator
+          notebook_task:
+            notebook_path: /Repos/smitsorathiya12@gmail.com/EcommPipelineandAnalysis/FakerScripts/generate_orders
+            source: WORKSPACE
+        - task_key: silver_layer
+          depends_on:
+            - task_key: EcommerceDataenrichPipeline
+          notebook_task:
+            notebook_path: /Repos/smitsorathiya12@gmail.com/EcommPipelineandAnalysis/Notebooks/03_silver_transformations
+            source: WORKSPACE
+        - task_key: gold_layer
+          depends_on:
+            - task_key: silver_layer
+          notebook_task:
+            notebook_path: /Repos/smitsorathiya12@gmail.com/EcommPipelineandAnalysis/Notebooks/04_gold_aggregations
+            source: WORKSPACE
+      queue:
+        enabled: true
+      performance_target: STANDARD
